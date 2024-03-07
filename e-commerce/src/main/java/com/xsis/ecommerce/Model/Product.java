@@ -16,4 +16,5 @@ public class Product {
     private int stock;
     private int price;
     private String image_url;
+    private boolean isDelete;
 }
