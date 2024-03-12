@@ -6,12 +6,24 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 //generic class
 @JsonInclude(Include.NON_NULL)
 public class Resp<T> {
-    private Integer code;
-    private String message;
+    private Integer code = 200;
+    private String message = "OK";
     private Integer total_data;
     private Integer total_page;
     private Integer page;
     private T data;
+
+    public Resp() {
+    }
+
+    public Resp(CustomException e) {
+        this.code = e.getCode();
+        this.message = e.getMessage();
+    }
+
+    public Resp(T data) {
+        this.data = data;
+    }
 
     public Integer getTotal_data() {
         return this.total_data;

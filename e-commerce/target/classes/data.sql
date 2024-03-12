@@ -1,3 +1,7 @@
+insert into role(name) values 
+('buyer'),
+('seller');
+
 INSERT INTO product(name, description, brand, model, category, stock, price) VALUES
 ('Smartphone', 'Powerful smartphone with high-quality camera', 'Samsung', 'Galaxy S21', 'Gadget', 100, 10000000),
 ('Laptop', 'Thin and lightweight laptop for work and entertainment', 'Dell', 'XPS 13', 'Computer', 50, 20000000),

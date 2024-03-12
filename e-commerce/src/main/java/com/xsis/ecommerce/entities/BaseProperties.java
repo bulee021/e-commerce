@@ -8,10 +8,10 @@ import jakarta.persistence.MappedSuperclass;
 @MappedSuperclass
 public class BaseProperties {
 
-    @Column(nullable = false)
+    @Column
     private Long created_by;
 
-    @Column(nullable = false)
+    @Column
     private Date created_on;
 
     @Column
