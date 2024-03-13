@@ -52,4 +52,20 @@ public interface UserRepository extends JpaRepository<User, Long> {
                 password = :password
             """)
     public User login(@Param("username") String username, @Param("password") String password);
+
+    @Query(nativeQuery = true, value = """
+            select
+                m_user.*
+            from
+                token
+            join
+                m_user
+            on
+                m_user.id_user = token.id_user
+            where
+                m_user.is_delete = false
+            and
+                token.token = :token
+            """)
+    public User getUserByToken(@Param("token") String token);
 }

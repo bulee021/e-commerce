@@ -1,10 +1,13 @@
 package com.xsis.ecommerce.restcontrollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.xsis.ecommerce.dto.LoginDTO;
 import com.xsis.ecommerce.entities.Token;
 import com.xsis.ecommerce.entities.User;
 import com.xsis.ecommerce.services.UserService;
@@ -27,8 +30,9 @@ public class UserRestController {
         return new Resp<>(!us.isUsernameExists(username));
     }
 
-    @RequestMapping("/create")
-    public Resp<User> createUser(User user) {
+    @PostMapping("/create")
+    public Resp<User> createUser(@RequestBody User user) {
+        System.out.println(user.getName() + " tries to register");
         try {
             return new Resp<>(us.createUser(user));
         } catch (CustomException e) {
@@ -36,12 +40,17 @@ public class UserRestController {
         }
     }
 
-    @RequestMapping("/login")
-    public Resp<Token> login(String username, String password) {
+    @PostMapping("/login")
+    public Resp<Token> login(@RequestBody LoginDTO loginDTO) {
         try {
-            return new Resp<>(us.login(username, password));
+            return new Resp<>(us.login(loginDTO.getUsername(), loginDTO.getPassword()));
         } catch (CustomException e) {
             return new Resp<>(e);
         }
+    }
+
+    @RequestMapping("/getByToken")
+    public Resp<User> getUserByToken(@RequestParam("token") String token) {
+        return new Resp<>(us.getUserByToken(token));
     }
 }

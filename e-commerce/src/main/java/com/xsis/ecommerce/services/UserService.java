@@ -50,8 +50,8 @@ public class UserService {
             Token token = new Token();
             token.setId_user(user.getId_user());
             try {
-                MessageDigest md = MessageDigest.getInstance("SHA-256");
-                String generatedToken = md.digest(user.getUsername().getBytes()).toString();
+                MessageDigest md = MessageDigest.getInstance("MD5");
+                String generatedToken = md.digest(user.getUsername().getBytes()).toString().substring(3);
                 token.setToken(generatedToken);
             } catch (NoSuchAlgorithmException e) {
                 token.setToken(Math.random() * 100 + user.getUsername());
@@ -61,5 +61,9 @@ public class UserService {
         } else {
             throw new CustomException(401, "username and password don't match");
         }
+    }
+
+    public User getUserByToken(String token) {
+        return ur.getUserByToken(token);
     }
 }
