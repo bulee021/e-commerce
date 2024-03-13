@@ -11,10 +11,13 @@ import com.xsis.ecommerce.utils.Resp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
 @RequestMapping("/api")
@@ -28,7 +31,20 @@ public class ProductRestController {
         Resp<List<InterProductDTO>> response = new Resp<>();
         response.setCode(200);
         response.setMessage("OK");
-        response.setData(ps.getAllProducts());
+
+        List<InterProductDTO> products = ps.getAllProducts();
+        response.setTotal_data(products.size());
+        response.setData(products);
+
+        return response;
+    }
+
+    @GetMapping("/product/id")
+    public Resp<InterProductDTO> getProductById(@RequestParam("id_product") Long id_product) {
+        Resp<InterProductDTO> response = new Resp<>();
+        response.setCode(200);
+        response.setMessage("OK");
+        response.setData(ps.getProductById(id_product));
 
         return response;
     }
@@ -51,4 +67,35 @@ public class ProductRestController {
         return response;
     }
 
+    @PutMapping("/product")
+    public Resp<String> updateProduct(
+            @RequestBody PostProductDTO postProductDTO) {
+
+        Resp<String> response = new Resp<>();
+
+        try {
+            ps.updateProduct(postProductDTO);
+            response.setCode(200);
+            response.setMessage("OK");
+
+        } catch (CustomException e) {
+            response.setCode(e.getCode());
+            response.setMessage(e.getMessage());
+        }
+
+        return response;
+    }
+
+    @DeleteMapping("/product")
+    public Resp<String> deleteMapping(
+            @RequestParam("id_product") Long id_product) {
+
+        Resp<String> response = new Resp<>();
+
+        ps.deleteProduct(id_product);
+        response.setCode(200);
+        response.setMessage("OK");
+
+        return response;
+    }
 }

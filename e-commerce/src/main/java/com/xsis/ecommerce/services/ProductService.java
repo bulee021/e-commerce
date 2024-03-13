@@ -21,6 +21,10 @@ public class ProductService {
         return pr.getAllProducts();
     }
 
+    public InterProductDTO getProductById(Long id_product) {
+        return pr.getProductById(id_product);
+    }
+
     public void insertProduct(PostProductDTO postProductDTO) throws CustomException {
         if (pr.isNameExist(postProductDTO.getName())) {
             throw new CustomException(
@@ -45,8 +49,9 @@ public class ProductService {
         ProductEntity dataProductEntity = pr.getReferenceById(postProductDTO.getId_product());
 
         if (postProductDTO.getName().equals(dataProductEntity.getName())) {
-
+            // nama tetap sama, kolom lain yang berubah
         } else if (pr.isNameExist(postProductDTO.getName())) {
+            // nama berubah -> harus dicek dengan nama yang lain agar tidak duplikat
             throw new CustomException(
                     453,
                     "Name " + postProductDTO.getName() + " is already exist");
@@ -65,4 +70,10 @@ public class ProductService {
         pr.save(dataProductEntity);
     }
 
+    public void deleteProduct(Long id_product) {
+        ProductEntity dataProductEntity = pr.getReferenceById(id_product);
+        dataProductEntity.setIs_delete(true);
+
+        pr.save(dataProductEntity);
+    }
 }
