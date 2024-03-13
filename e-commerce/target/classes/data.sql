@@ -29,3 +29,7 @@ INSERT INTO product(name, description, brand, model, category, stock, price, ima
 ('Electric Scooter', 'Foldable electric scooter for convenient urban commuting', 'Xiaomi', 'Mi Electric Scooter', 'Gadget', 65, 3000000, 'url'),
 ('Fitness Tracker', 'Fitness tracker for monitoring activity levels and health metrics', 'Fitbit', 'Charge 4', 'Wearable', 80, 1500000, 'url'),
 ('Desk Lamp', 'Modern desk lamp with adjustable brightness levels', 'IKEA', 'Jansjo', 'Home Decor', 55, 800000, 'url');
+
+insert into role(name) values 
+('buyer'),
+('seller');
