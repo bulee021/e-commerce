@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.xsis.ecommerce.dto.InterProductDTO;
 import com.xsis.ecommerce.dto.PostProductDTO;
+import com.xsis.ecommerce.repositories.ProductRepository;
 import com.xsis.ecommerce.services.ProductService;
 import com.xsis.ecommerce.utils.CustomException;
 import com.xsis.ecommerce.utils.Resp;
@@ -26,6 +27,9 @@ public class ProductRestController {
     @Autowired
     private ProductService ps;
 
+    @Autowired
+    private ProductRepository pr;
+
     @GetMapping("/product")
     public Resp<List<InterProductDTO>> getAllProducts() {
         Resp<List<InterProductDTO>> response = new Resp<>();
@@ -45,6 +49,16 @@ public class ProductRestController {
         response.setCode(200);
         response.setMessage("OK");
         response.setData(ps.getProductById(id_product));
+
+        return response;
+    }
+
+    @GetMapping("/product/category")
+    public Resp<List<InterProductDTO>> getProductByCategory(@RequestParam("category") String category) {
+        Resp<List<InterProductDTO>> response = new Resp<>();
+        response.setCode(200);
+        response.setMessage("OK");
+        response.setData(pr.getProductByCategory(category));
 
         return response;
     }
