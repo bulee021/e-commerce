@@ -48,6 +48,10 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
                         "and id_product = :id_product")
         public InterProductDTO getProductById(@Param("id_product") Long id_product);
 
+        @Query(nativeQuery = true, value = "select * from product " +
+                "where id_product = :id_product and is_delete = false")
+        public ProductEntity getProductNewById(@Param("id_product") Long id_product);
+
         @Query(nativeQuery = true, value = "select distinct category from product")
         public List<InterProductDTO> getAllCategories();
 

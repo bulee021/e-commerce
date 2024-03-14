@@ -7,9 +7,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "m_user")
+@NoArgsConstructor
+@AllArgsConstructor
 public class User extends BaseProperties {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +27,10 @@ public class User extends BaseProperties {
     private String username;
     private String password;
     private Long balance;
+
+    public User(Long userId) {
+        this.id_user = userId;
+    }
 
     public Long getId_user() {
         return id_user;
