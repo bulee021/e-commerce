@@ -1,6 +1,7 @@
-package com.xsis.ecommerce.restcontroller;
+package com.xsis.ecommerce.restcontrollers;
 
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.xsis.ecommerce.dto.InterProductDTO;
 import com.xsis.ecommerce.dto.PostProductDTO;
@@ -9,6 +10,7 @@ import com.xsis.ecommerce.services.ProductService;
 import com.xsis.ecommerce.utils.CustomException;
 import com.xsis.ecommerce.utils.Resp;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,6 +111,27 @@ public class ProductRestController {
         ps.deleteProduct(id_product);
         response.setCode(200);
         response.setMessage("OK");
+
+        return response;
+    }
+
+    @PostMapping("/product/image")
+    public Resp<String> uploadProductImage(
+            @RequestParam("id_product") Long id_product,
+            @RequestParam("file") MultipartFile file) {
+
+        Resp<String> response = new Resp<>();
+        try {
+            ps.uploadProductImage(id_product, file);
+            response.setCode(200);
+            response.setMessage("OK");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            response.setCode(455);
+            response.setMessage("Failed to upload file!");
+
+        }
 
         return response;
     }

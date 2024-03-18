@@ -1,9 +1,17 @@
 package com.xsis.ecommerce.services;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.xsis.ecommerce.dto.InterProductDTO;
 import com.xsis.ecommerce.dto.PostProductDTO;
@@ -75,5 +83,37 @@ public class ProductService {
         dataProductEntity.setIs_delete(true);
 
         pr.save(dataProductEntity);
+    }
+
+    public String uploadProductImage(
+            Long id_product,
+            MultipartFile file)
+            throws IOException {
+
+        // path lokasi folder uploads
+        String path = new FileSystemResource("").getFile().getAbsolutePath();
+        path += "\\e-commerce\\uploads\\";
+
+        // System.out.println(path);
+
+        // path baru dengan nama file
+        String fileName = "image-product-" + id_product + ".jpg";
+        Path newPath = Paths.get(path + fileName);
+
+        // memindahkan gambar ke folder upload
+        Files.copy(file.getInputStream(), newPath, StandardCopyOption.REPLACE_EXISTING);
+
+        // mengambil URL hasil upload
+        String hasilUpload = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path("/images/").path(fileName).toUriString();
+
+        // ambil dulu data user
+        ProductEntity productEntity = pr.getReferenceById(id_product);
+        // ambil data biodata sebelumnya
+        productEntity.setImage_url(hasilUpload.replace("http://localhost", ""));
+        // simpan data image url
+        pr.save(productEntity);
+
+        return hasilUpload;
     }
 }

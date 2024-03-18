@@ -1,4 +1,4 @@
-package com.xsis.ecommerce.restcontroller;
+package com.xsis.ecommerce.restcontrollers;
 
 import java.util.List;
 
